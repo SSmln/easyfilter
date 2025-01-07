@@ -1,0 +1,94 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "title": "1",
+      "type": "통합공고",
+      "status": "접수예정",
+      "categories": {
+        "main": "소방청",
+        "sub": "자율주행",
+        "detail": "차량 제어 시스템"
+      },
+      "location": "대전",
+      "price": 1800000,
+      "rating": 4.7,
+      "facilities": ["시뮬레이션 도구", "센서 데이터 분석"],
+      "description": "자율주행 자동차의 정밀 제어 시스템 개발.",
+      "date": "2024-01-12",
+      "images": ["/images/project3.jpg"]
+    },
+    {
+      "id": 2,
+      "title": "2",
+      "type": "개별공고",
+      "status": "접수예정",
+      "categories": {
+        "main": "소방청",
+        "sub": "자율주행",
+        "detail": "차량 제어 시스템"
+      },
+      "location": "대전",
+      "price": 1800000,
+      "rating": 4.7,
+      "facilities": ["시뮬레이션 도구", "센서 데이터 분석"],
+      "description": "자율주행 자동차의 정밀 제어 시스템 개발.",
+      "date": "2024-01-12",
+      "images": ["/images/project3.jpg"]
+    },
+    {
+      "id": 3,
+      "title": "3",
+      "type": "통합공고",
+      "status": "접수중",
+      "categories": {
+        "main": "소방청",
+        "sub": "자율주행",
+        "detail": "차량 제어 시스템"
+      },
+      "location": "대전",
+      "price": 1800000,
+      "rating": 4.7,
+      "facilities": ["시뮬레이션 도구", "센서 데이터 분석"],
+      "description": "자율주행 자동차의 정밀 제어 시스템 개발.",
+      "date": "2024-01-12",
+      "images": ["/images/project3.jpg"]
+    },
+    {
+      "id": 4,
+      "title": "4",
+      "type": "통합공고",
+      "status": "마감",
+      "categories": {
+        "main": "소방청",
+        "sub": "자율주행",
+        "detail": "차량 제어 시스템"
+      },
+      "location": "대전",
+      "price": 1800000,
+      "rating": 4.7,
+      "facilities": ["시뮬레이션 도구", "센서 데이터 분석"],
+      "description": "자율주행 자동차의 정밀 제어 시스템 개발.",
+      "date": "2024-01-12",
+      "images": ["/images/project3.jpg"]
+    },
+    {
+      "id": 5,
+      "title": "5",
+      "type": "통합공고",
+      "status": "마감",
+      "categories": {
+        "main": "과학기술정보통신부",
+        "sub": "자율주행",
+        "detail": "차량 제어 시스템"
+      },
+      "location": "대전",
+      "price": 1800000,
+      "rating": 4.7,
+      "facilities": ["시뮬레이션 도구", "센서 데이터 분석"],
+      "description": "자율주행 자동차의 정밀 제어 시스템 개발.",
+      "date": "2024-01-12",
+      "images": ["/images/project3.jpg"]
+    }
+  ]
+}

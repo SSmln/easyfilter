@@ -1,5 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import TreeView from "./tree/page";
+import TreeSearch from "./treeSearch/page";
 
 export const Page = () => {
   const [data, setData] = useState([]);
@@ -14,7 +16,7 @@ export const Page = () => {
     async function fetchData() {
       const resposne = await fetch("http://localhost:9999/data");
       const data = await resposne.json();
-      console.log(data);
+      // console.log(data);
       setData(data);
     }
     fetchData();
@@ -28,6 +30,15 @@ export const Page = () => {
         setFilterStack={setFilterStack}
       />
       <div className="w-full h-0.5 bg-gray-300 my-6"></div>
+      <input type="text" />
+
+      <TreeView />
+
+      <div className="w-full h-0.5 bg-gray-300 my-6"></div>
+      {/* <TreeSearch /> */}
+
+      <div className="w-full h-0.5 bg-gray-300 my-6"></div>
+
       <h1 className="mt-6">
         <p>데이터 정보</p>
         <div className="flex flex-wrap gap-6">
@@ -62,7 +73,7 @@ const FilteredData = ({ data, filterStack }) => {
     return department.includes(e.categories.main);
   }
 
-  console.log(filteredData);
+  // console.log(filteredData);
   return (
     <>
       {filteredData.map((e, id) => (

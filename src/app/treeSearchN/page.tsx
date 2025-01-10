@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useMemo } from "react";
 import { Input, Tree, TreeProps } from "antd";
 
-export const TreeSearchN = ({ setFilterStack }) => {
+export const TreeSearchN = ({ filterStack, setFilterStack }) => {
   const [expandedKeys, setExpandedKeys] = useState([]);
   const [searchValue, setSearchValue] = useState("");
   const [autoExpandParent, setAutoExpandParent] = useState(true);
@@ -161,25 +161,36 @@ export const TreeSearchN = ({ setFilterStack }) => {
 
   const onCheck: TreeProps["onCheck"] = (checkedKeysValue) => {
     setCheckedKeys(checkedKeysValue);
+
     setFilterStack((prev) => {
+      if (prev[2] && prev[2].value.length === 0) {
+        return prev.map((t) => {
+          if (t.title === "departments") {
+            return { ...t, value: [] }; // 전체 데이터를 노출하기 위해 빈 배열로 설정
+          }
+          return t;
+        });
+      }
+
+      const hasDepartments = prev.some((t) => t.title === "departments");
+      if (!hasDepartments) {
+        // departments 값이 없으면 전체 데이터를 노출
+        return prev.map((t) => {
+          if (t.title === "departments") {
+            return { ...t, value: [] }; // 전체 데이터를 노출하기 위해 빈 배열로 설정
+          }
+          return t;
+        });
+      }
+
       return prev.map((t) => {
         if (t.title === "departments") {
           return { ...t, value: checkedKeysValue };
         }
-        return t; // else 블록을 추가하여 반환 값을 명시적으로 설정
+        return t;
       });
     });
   };
-  // const onCheck = (checkedKeysValue) => {
-  //   setCheckedKeys(checkedKeysValue);
-  //   setFilterStack((prev) => {
-  //     return prev.map((t) => {
-  //       if (t.title === "departments") {
-  //         return { ...t, value: checkedKeysValue };
-  //       }
-  //     });
-  //   });
-  // };
 
   const onSelect = (selectedKeys, { node }) => {
     const { key } = node;

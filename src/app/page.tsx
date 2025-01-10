@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import TreeView from "./tree/page";
-// import TreeSearch from "./treeSearch/page";
+import TreeSearchN from "./treeSearchN/page";
 
 export const Page = () => {
   const [data, setData] = useState([]);
@@ -9,8 +8,9 @@ export const Page = () => {
   const [filterStack, setFilterStack] = useState([
     { id: 0, title: "announcementType", value: "전체" },
     { id: 1, title: "announcementStatus", value: "접수중" },
-    { id: 2, title: "departments", value: ["전체"] },
+    { id: 2, title: "departments", value: null },
   ]);
+  console.log(filterStack);
 
   useEffect(() => {
     async function fetchData() {
@@ -29,15 +29,6 @@ export const Page = () => {
         filterStack={filterStack}
         setFilterStack={setFilterStack}
       />
-      <div className="w-full h-0.5 bg-gray-300 my-6"></div>
-      <input type="text" />
-
-      <TreeView />
-
-      <div className="w-full h-0.5 bg-gray-300 my-6"></div>
-      {/* <TreeSearch /> */}
-
-      <div className="w-full h-0.5 bg-gray-300 my-6"></div>
 
       <h1 className="mt-6">
         <p>데이터 정보</p>
@@ -51,94 +42,25 @@ export const Page = () => {
 
 export default Page;
 
-const FilteredData = ({ data, filterStack }) => {
-  const type = filterStack[0].value;
-  const status = filterStack[1].value;
-  const department = filterStack[2].value;
-
-  const filteredData = data.filter((e) => {
-    return typeFilter(e) && statusFilter(e) && departmentFilter(e);
-  });
-
-  function typeFilter(e) {
-    if (type === "전체") return e;
-    return e.type === type;
-  }
-  function statusFilter(e) {
-    if (status === "전체") return e;
-    return e.status === status;
-  }
-  function departmentFilter(e) {
-    if (department.includes("전체")) return e;
-    return department.includes(e.categories.main);
-  }
-
-  // console.log(filteredData);
-  return (
-    <>
-      {filteredData.map((e, id) => (
-        <div key={e.id} className="max-w-sm rounded overflow-hidden shadow-lg">
-          <div className="px-6 py-4">
-            <div className="font-bold text-xl mb-2">{e.title}</div>
-            <p className="text-gray-700 text-base">
-              <strong>카테고리:</strong> {e.categories.main} {">"}{" "}
-              {e.categories.sub} {">"} {e.categories.detail}
-            </p>
-            <p className="text-gray-700 text-base">
-              <strong>위치:</strong> {e.location}
-            </p>
-            <p className="text-gray-700 text-base">
-              <strong>가격:</strong> {e.price.toLocaleString()}원
-            </p>
-            <p className="text-gray-700 text-base">
-              <strong>평점:</strong> {e.rating}
-            </p>
-            <p className="text-gray-700 text-base">
-              <strong>시설:</strong> {e.facilities.join(", ")}
-            </p>
-            <p className="text-gray-700 text-base">
-              <strong>설명:</strong> {e.description}
-            </p>
-            <p className="text-gray-700 text-base">
-              <strong>날짜:</strong> {e.date}
-            </p>
-          </div>
-        </div>
-      ))}
-    </>
-  );
-};
-
 const FilterComponent = ({ filterStack, setFilterStack }) => {
   const extractTitles = (data, key) => data[0][key].map((item) => item.title);
   const filterType = extractTitles(filterData, "announcementType");
   const filterStatus = extractTitles(filterData, "announcementStatus");
-  const filterDepartment = extractTitles(filterData, "departments");
 
   function handleFilter(e, title, type) {
     const findIndex = filterStack.findIndex((t) => t.title === type);
     if (findIndex === -1) return;
     if (e.target.checked) {
       console.log("checked");
-      if (type === "departments") {
-        setFilterStack((prev) => {
-          return prev.map((t) => {
-            if (t.title === type) {
-              return { ...t, value: [...t.value, title] };
-            }
-            return t;
-          });
+
+      setFilterStack((prev) => {
+        return prev.map((t) => {
+          if (t.title === type) {
+            return { ...t, value: title };
+          }
+          return t;
         });
-      } else {
-        setFilterStack((prev) => {
-          return prev.map((t) => {
-            if (t.title === type) {
-              return { ...t, value: title };
-            }
-            return t;
-          });
-        });
-      }
+      });
     } else {
       console.log("not checked");
       setFilterStack((prev) => {
@@ -193,26 +115,72 @@ const FilterComponent = ({ filterStack, setFilterStack }) => {
         })}
       </div>
       <p>부처 필터</p>
-      <div className="grid grid-cols-4 gap-2">
-        {filterDepartment.map((title, index) => (
-          <label key={index} className="w-full space-x-2">
-            <input
-              type="checkbox"
-              value={title}
-              defaultChecked={title === filterDepartment[0]}
-              onChange={(e) => {
-                handleFilter(e, title, "departments");
-              }}
-            />
-            <span>{title}</span>
-          </label>
-        ))}
-      </div>
+      <TreeSearchN setFilterStack={setFilterStack} />
     </div>
   );
 };
 
-// export default FilterComponent;
+const FilteredData = ({ data, filterStack }) => {
+  const type = filterStack[0].value;
+  const status = filterStack[1].value;
+  const department = filterStack[2].value;
+  console.log(department, "department");
+  const filteredData = data.filter((e) => {
+    return typeFilter(e) && statusFilter(e) && departmentFilter(e);
+  });
+  console.log(filteredData, "filteredData");
+  function typeFilter(e) {
+    if (type === "전체") return e;
+    return e.type === type;
+  }
+  function statusFilter(e) {
+    if (status === "전체") return e;
+    return e.status === status;
+  }
+  function departmentFilter(e) {
+    if (department === null) return e;
+    return department.includes(e.categories.key);
+  }
+
+  return (
+    <>
+      {filteredData.map((e, id) => (
+        <div key={e.id} className="max-w-sm rounded overflow-hidden shadow-lg">
+          <div className="px-6 py-4">
+            <div className="font-bold text-xl mb-2">{e.title}</div>
+            <p className="text-gray-700 text-base">
+              <strong>카테고리:</strong> {e.categories.main} {">"}{" "}
+              {e.categories.sub} {">"} {e.categories.detail}
+            </p>
+            <p className="text-gray-700 text-base">
+              <strong>위치:</strong> {e.location}
+            </p>
+            <p className="text-gray-700 text-base">
+              <strong>가격:</strong> {e.price.toLocaleString()}원
+            </p>
+            <p className="text-gray-700 text-base">
+              <strong>평점:</strong> {e.rating}
+            </p>
+            <p className="text-gray-700 text-base">
+              <strong>시설:</strong> {e.facilities.join(", ")}
+            </p>
+            <p className="text-gray-700 text-base">
+              <strong>설명:</strong> {e.description}
+            </p>
+            <p className="text-gray-700 text-base">
+              <strong>날짜:</strong> {e.date}
+            </p>
+            <h1>
+              <p>공고 유형: {e.type}</p>
+              <p>공고 상태: {e.status}</p>
+              <p>부처: {e.categories.key}</p>
+            </h1>
+          </div>
+        </div>
+      ))}
+    </>
+  );
+};
 
 const filterData = [
   {

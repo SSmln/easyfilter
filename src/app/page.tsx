@@ -8,9 +8,9 @@ export const Page = () => {
   const [filterStack, setFilterStack] = useState([
     { id: 0, title: "announcementType", value: "전체" },
     { id: 1, title: "announcementStatus", value: "접수중" },
-    { id: 2, title: "departments", value: null },
+    { id: 2, title: "departments", value: [] },
   ]);
-  console.log(filterStack);
+  console.log(filterStack, "filterStack");
 
   useEffect(() => {
     async function fetchData() {
@@ -125,10 +125,11 @@ const FilteredData = ({ data, filterStack }) => {
   const status = filterStack[1].value;
   const department = filterStack[2].value;
   console.log(department, "department");
+
   const filteredData = data.filter((e) => {
     return typeFilter(e) && statusFilter(e) && departmentFilter(e);
   });
-  console.log(filteredData, "filteredData");
+  // console.log(filteredData, "filteredData");
   function typeFilter(e) {
     if (type === "전체") return e;
     return e.type === type;
@@ -138,7 +139,9 @@ const FilteredData = ({ data, filterStack }) => {
     return e.status === status;
   }
   function departmentFilter(e) {
-    if (department === null) return e;
+    console.log(e, "e");
+    if (department?.length === 0) return e;
+
     return department.includes(e.categories.key);
   }
 

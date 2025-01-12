@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useMemo } from "react";
 import { Input, Tree, TreeProps } from "antd";
 
@@ -8,9 +8,21 @@ export const TreeSearchN = ({ filterStack, setFilterStack }) => {
   const [searchValue, setSearchValue] = useState("");
   const [autoExpandParent, setAutoExpandParent] = useState(true);
   const [checkedKeys, setCheckedKeys] = useState([]);
-
+  console.log(checkedKeys, "checkedKeys");
   // const { Input, Tree } = antd;
   const { Search } = Input;
+  // useEffect(() => {
+  //   if (checkedKeys.length === 0) {
+  //     setFilterStack((prev) => {
+  //       return prev.map((t) => {
+  //         if (t.title === "departments") {
+  //           return { ...t, value: [] }; // 모든 데이터를 포함하도록 설정
+  //         }
+  //         return t;
+  //       });
+  //     });
+  //   }
+  // }, [checkedKeys]);
 
   const defaultData = [
     {
@@ -163,26 +175,6 @@ export const TreeSearchN = ({ filterStack, setFilterStack }) => {
     setCheckedKeys(checkedKeysValue);
 
     setFilterStack((prev) => {
-      if (prev[2] && prev[2].value.length === 0) {
-        return prev.map((t) => {
-          if (t.title === "departments") {
-            return { ...t, value: [] }; // 전체 데이터를 노출하기 위해 빈 배열로 설정
-          }
-          return t;
-        });
-      }
-
-      const hasDepartments = prev.some((t) => t.title === "departments");
-      if (!hasDepartments) {
-        // departments 값이 없으면 전체 데이터를 노출
-        return prev.map((t) => {
-          if (t.title === "departments") {
-            return { ...t, value: [] }; // 전체 데이터를 노출하기 위해 빈 배열로 설정
-          }
-          return t;
-        });
-      }
-
       return prev.map((t) => {
         if (t.title === "departments") {
           return { ...t, value: checkedKeysValue };
@@ -190,6 +182,7 @@ export const TreeSearchN = ({ filterStack, setFilterStack }) => {
         return t;
       });
     });
+    // }
   };
 
   const onSelect = (selectedKeys, { node }) => {
@@ -202,7 +195,7 @@ export const TreeSearchN = ({ filterStack, setFilterStack }) => {
 
     setCheckedKeys(newCheckedKeys);
   };
-  console.log(checkedKeys);
+
   return (
     <div>
       <Search
